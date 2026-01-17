@@ -1,0 +1,23 @@
+{% extends "todo/base.html" %}
+
+{% block title %}{{ todo.title }}{% endblock %}
+
+{% block content %}
+<h2>{{ todo.title }}</h2>
+
+<p>{{ todo.content }}</p>
+
+<p><small>作成日: {{ todo.created_at }}</small></p>
+
+<hr>
+
+<a href="{% url 'todo_update' pk=todo.pk %}">編集</a>
+
+<form method="POST" action="{% url 'todo_delete' pk=todo.pk %}" style="display: inline;">
+    {% csrf_token %}
+    <button type="submit" onclick="return confirm('削除しますか？');">削除</button>
+</form>
+
+<br><br>
+<a href="{% url 'todo_list' %}">← 一覧に戻る</a>
+{% endblock %}

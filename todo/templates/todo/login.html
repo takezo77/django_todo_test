@@ -1,0 +1,34 @@
+{% comment %}
+ログインページ（base.htmlを継承しない独立ページ）
+
+【学習ポイント: Flask との比較】
+- Flask: <form method="POST">
+    - Django: <form method="POST">{% csrf_token %}
+        → Django は CSRF トークンが必須！
+        {% endcomment %}
+        <!DOCTYPE html>
+        <html lang="ja">
+
+        <head>
+            <meta charset="UTF-8">
+            <title>ログイン</title>
+        </head>
+
+        <body>
+            <h1>ログイン</h1>
+
+            {% if error %}
+            <p style="color: red;">{{ error }}</p>
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+                <label>パスワード:</label>
+                <input type="password" name="password" required>
+                <button type="submit">ログイン</button>
+            </form>
+
+            <p><small>ヒント: パスワードは "secret" です</small></p>
+        </body>
+
+        </html>

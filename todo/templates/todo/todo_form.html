@@ -1,0 +1,36 @@
+{% extends "todo/base.html" %}
+
+{% block title %}
+{% if todo %}Todo編集{% else %}新規作成{% endif %}
+{% endblock %}
+
+{% block content %}
+<h2>
+    {% if todo %}Todo編集{% else %}新規Todo作成{% endif %}
+</h2>
+
+{% if error %}
+<p style="color: red;">{{ error }}</p>
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+    <p>
+        <label>タイトル:</label><br>
+        <input type="text" name="title" value="{% if todo %}{{ todo.title }}{% endif %}" required>
+    </p>
+
+    <p>
+        <label>内容:</label><br>
+        <textarea name="content" rows="5" cols="40">{% if todo %}{{ todo.content }}{% endif %}</textarea>
+    </p>
+
+    <p>
+        <button type="submit">
+            {% if todo %}更新{% else %}作成{% endif %}
+        </button>
+    </p>
+</form>
+
+<a href="{% url 'todo_list' %}">← キャンセル</a>
+{% endblock %}

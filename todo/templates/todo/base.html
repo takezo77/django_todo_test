@@ -1,0 +1,50 @@
+{% comment %}
+===============================================
+base.html - ベーステンプレート
+===============================================
+
+【学習ポイント: Flask との比較】
+Flask (Jinja2):
+{% extends "base.html" %}
+{% block content %}{% endblock %}
+{{ url_for('memo_list') }}
+
+Django:
+{% extends "todo/base.html" %}
+{% block content %}{% endblock %}
+{% url 'todo_list' %} ← url_for の代わりに url タグを使用
+{% endcomment %}
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Todoアプリ{% endblock %}</title>
+    <style>
+        nav a {
+            text-decoration: none;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>📝 Todoアプリ（Django版）</h1>
+
+    <nav>
+        <a href="{% url 'todo_list' %}">一覧</a>
+        <a href="{% url 'todo_create' %}">新規作成</a>
+        <a href="{% url 'logout' %}">ログアウト</a>
+    </nav>
+
+    <hr>
+
+    {% block content %}{% endblock %}
+
+    <hr>
+    <footer>
+        <small>Django学習用Todoアプリ（Flask メモ帳アプリ移植版）</small>
+    </footer>
+</body>
+
+</html>

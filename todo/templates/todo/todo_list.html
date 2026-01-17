@@ -1,0 +1,31 @@
+{% extends "todo/base.html" %}
+
+{% block title %}Todo一覧{% endblock %}
+
+{% block content %}
+<h2>Todo一覧</h2>
+
+<p><a style="text-decoration: none;" href="{% url 'todo_create' %}">+ 新規作成</a></p>
+
+{% if todos %}
+<p>{{ todos|length }}件のTodoがあります</p>
+
+{% for todo in todos %}
+<div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
+    <h3>{{ todo.title }}</h3>
+    <p>{{ todo.content }}</p>
+    <small>作成日: {{ todo.created_at }}</small>
+    <br>
+    <a style="text-decoration: none;" href="{% url 'todo_update' pk=todo.pk %}">編集</a> &nbsp;
+
+    <form method="POST" action="{% url 'todo_delete' pk=todo.pk %}" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" onclick="return confirm('削除しますか？');">削除</button>
+    </form>
+</div>
+{% endfor %}
+
+{% else %}
+<p>Todoがありません。最初のTodoを作成しましょう！</p>
+{% endif %}
+{% endblock %}
