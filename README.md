@@ -1,52 +1,50 @@
-Django Todo アプリ（学習用・Flask比較）
-概要（Overview）
+# Django Todo アプリ（学習用・Flask比較）
 
-このアプリは Django の基本構造と CRUD 処理を、
-Flask の Todo アプリと比較しながら学習するためのサンプルです。
+## 概要（Overview）
 
-Django の URL ルーティング
+このアプリは **Django の基本構造と CRUD 処理**を、  
+**Flask の Todo アプリと比較しながら学習するためのサンプル**です。
 
-View（関数ベース）
+以下の機能を最小構成で実装しています。
 
-Session を使った簡易ログイン
+- Django の URL ルーティング
+- View（関数ベース）
+- Session を使った簡易ログイン
+- Todo の CRUD（作成・一覧・詳細・更新・削除）
 
-Todo の CRUD（作成・一覧・詳細・更新・削除）
+---
 
-を最小構成で実装しています。
+## 想定読者（Who is this for）
 
-想定読者（Who is this for）
+- Flask を学習済みで Django に移行したい人
+- Django の URL / View / CRUD の関係が分からない人
+- 実務向け README の書き方を学びたい人
 
-Flask を学習済みで Django に移行したい人
+---
 
-Django の URL / View / CRUD の関係が分からない人
+## 使用技術（Tech Stack）
 
-実務向け README の書き方を学びたい人
+- Python 3.x
+- Django 4.x
+- SQLite3（開発用）
+- HTML（Django Template）
 
-使用技術（Tech Stack）
+---
 
-Python 3.x
+## 機能一覧（Features）
 
-Django 4.x
+- 🔐 簡易ログイン / ログアウト（セッション管理）
+- 📝 Todo 作成
+- 📄 Todo 一覧表示
+- 🔍 Todo 詳細表示
+- ✏️ Todo 編集
+- 🗑 Todo 削除
 
-SQLite3（開発用）
+---
 
-HTML（Django Template）
+## 画面遷移（Screen Flow）
 
-機能一覧（Features）
-
-🔐 簡易ログイン / ログアウト（セッション管理）
-
-📝 Todo 作成
-
-📄 Todo 一覧表示
-
-🔍 Todo 詳細表示
-
-✏️ Todo 編集
-
-🗑 Todo 削除
-
-画面遷移（Screen Flow）
+```text
 /login
   ↓
 /todos/（一覧）
@@ -55,23 +53,25 @@ HTML（Django Template）
   │    ├─ /edit/（編集）
   │    └─ /delete/（削除）
   └─ /logout/
-
 URL設計（Flask との比較）
 Flask の場合
+python
+コードをコピーする
 @app.route("/memos")
 def memo_list(): ...
 
 @app.route("/memos/<int:id>")
 def memo_detail(id): ...
-
 Django の場合（urls.py）
+python
+コードをコピーする
 path('todos/', views.todo_list, name='todo_list'),
 path('todos/<int:pk>/', views.todo_detail, name='todo_detail'),
-
-
 👉 URL定義を1か所に集約できるのが Django の特徴
 
 ディレクトリ構成（抜粋）
+text
+コードをコピーする
 todo_app/
 ├─ todo/
 │  ├─ views.py        # Flask の route 関数に相当
@@ -83,42 +83,39 @@ todo_app/
 │        ├─ todo_list.html
 │        ├─ todo_detail.html
 │        └─ todo_form.html
-
 ログイン仕様（簡易版）
-
 学習用のため Django 標準認証は使用していません
 
 パスワードが secret の場合のみログイン成功
 
 セッションキー logged_in で認証状態を管理
 
+python
+コードをコピーする
 request.session['logged_in'] = True
-
-
 Flask の
 
+python
+コードをコピーする
 session["logged_in"] = True
-
-
 と ほぼ同じ考え方です。
 
 ログイン制御（Flask風）
-
 Flask の @login_required を Django で再現しています。
 
-| 行 | 処理内容 |
-|---|---|
-| `def custom_login_required(view_func):` | デコレータ関数を定義 |
-| `wrapper()` | 実際のビュー関数を包む内部関数 |
-| `request.session.get('logged_in')` | ログイン状態をセッションから取得 |
-| `redirect('login')` | 未ログイン時はログイン画面へ遷移 |
-| `view_func(...)` | 元のビュー関数を実行 |
-
+python
+コードをコピーする
+def custom_login_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        if not request.session.get('logged_in'):
+            return redirect('login')
+        return view_func(request, *args, **kwargs)
+    return wrapper
+python
+コードをコピーする
 @custom_login_required
 def todo_list(request):
     ...
-
-
 👉 「Django = 難しい」ではなく、考え方は Flask と同じ
 
 CRUD対応表（Flask ⇔ Django）
@@ -128,3 +125,15 @@ CRUD対応表（Flask ⇔ Django）
 作成	memo_new	todo_create
 更新	memo_edit	todo_update
 削除	memo_delete	todo_delete
+
+
+
+ 
+
+
+
+
+
+
+
+
